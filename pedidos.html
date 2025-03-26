@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos - Jorge Lavanderia</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header class="main-header">
+            <div class="logo-container">
+                <img src="/Jorge.png" alt="Jorge Lavanderia" class="logo">
+                <div class="brand-text">
+                    <h1>Jorge Lavanderia</h1>
+                    <span class="tagline">Limpeza com qualidade</span>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <ul class="menu">
+                    <li><a href="pedidos.html" class="active"><i class="fas fa-shopping-basket"></i> Pedidos</a></li>
+                    <li><a href="estoque.html"><i class="fas fa-boxes"></i> Estoque</a></li>
+                    <li><a href="financeiro.html"><i class="fas fa-chart-line"></i> Financeiro</a></li>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Início</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <div class="section">
+                <h2><i class="fas fa-plus-circle"></i> Novo Pedido</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="cliente">Cliente:</label>
+                        <input type="text" id="cliente" placeholder="Nome do Cliente">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telefone">Telefone:</label>
+                        <input type="tel" id="telefone" placeholder="(00) 00000-0000">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cestosLavar">Cestos para lavar:</label>
+                        <input type="number" id="cestosLavar" placeholder="Quantidade" min="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cestosSecar">Cestos para secar:</label>
+                        <input type="number" id="cestosSecar" placeholder="Quantidade" min="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pagamento">Forma de Pagamento:</label>
+                        <select id="pagamento">
+                            <option value="cartao">Cartão</option>
+                            <option value="pix">PIX</option>
+                            <option value="dinheiro">Dinheiro</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="btn-adicionar-pedido" class="btn-primary"><i class="fas fa-save"></i> Adicionar
+                    Pedido</button>
+            </div>
+
+            <div class="section">
+                <h2><i class="fas fa-list"></i> Pedidos Recentes</h2>
+                <table id="tabelaPedidos">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Telefone</th>
+                            <th>Serviço</th>
+                            <th>Valor</th>
+                            <th>Pagamento</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-pedidos"></tbody>
+                </table>
+            </div>
+        </main>
+
+        <footer class="site-footer">
+            <div class="footer-container">
+                <div class="footer-section info">
+                    <h4>Jorge Lavanderia</h4>
+                    <p>Gerenciamento completo para sua lavanderia</p>
+                </div>
+
+                <div class="footer-section links">
+                    <h4>Links Rápidos</h4>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="pedidos.html">Pedidos</a></li>
+                        <li><a href="estoque.html">Estoque</a></li>
+                        <li><a href="financeiro.html">Financeiro</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section contact">
+                    <h4>Contato</h4>
+                    <p><i class="icon-phone"></i> (11) 99999-9999</p>
+                    <p><i class="icon-email"></i> contato@jorgelavanderia.com.br</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Jorge Lavanderia | Desenvolvido por <a href="#" class="developer-link">Ivonildo Lima</a>
+                </p>
+                <p class="version">Versão 1.0</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/financeiro.js"></script>
+    <script src="js/pedidos.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Verificar se o módulo Financeiro está disponível
+            if (typeof Financeiro === 'undefined') {
+                console.error('ERRO: Módulo Financeiro não foi carregado corretamente!');
+                alert('Erro no carregamento do sistema. Veja o console para detalhes.');
+            } else {
+                console.log('Módulo Financeiro detectado, inicializando Pedidos...');
+                Pedidos.init();
+            }
+        });
+    </script>
+</body>
+
+</html>

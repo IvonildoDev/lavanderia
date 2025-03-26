@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financeiro - Jorge Lavanderia</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Adicione este script para detectar carregamento de scripts -->
+    <script>
+        // Array para rastrear scripts carregados
+        window.scriptsCarregados = {
+            storage: false,
+            financeiro: false
+        };
+
+        // Função para verificar scripts
+        function verificarScriptsCarregados() {
+            const status = Object.entries(window.scriptsCarregados)
+                .map(([nome, carregado]) => `${nome}: ${carregado ? 'OK' : 'NÃO CARREGADO'}`)
+                .join('\n');
+
+            console.log('Status dos scripts:\n' + status);
+
+            if (!window.scriptsCarregados.storage || !window.scriptsCarregados.financeiro) {
+                console.error('ALERTA: Nem todos os scripts necessários foram carregados!');
+            }
+        }
+
+        // Verifica após o carregamento da página
+        window.addEventListener('load', verificarScriptsCarregados);
+    </script>
+
+    <style>
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-danger i {
+            margin-right: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="main-header">
+            <div class="logo-container">
+                <img src="/Jorge.png" alt="Jorge Lavanderia" class="logo">
+                <div class="brand-text">
+                    <h1>Jorge Lavanderia</h1>
+                    <span class="tagline">Limpeza com qualidade</span>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <ul class="menu">
+                    <li><a href="pedidos.html"><i class="fas fa-shopping-basket"></i> Pedidos</a></li>
+                    <li><a href="estoque.html"><i class="fas fa-boxes"></i> Estoque</a></li>
+                    <li><a href="financeiro.html" class="active"><i class="fas fa-chart-line"></i> Financeiro</a></li>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Início</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <div class="painel-resumo">
+                <div class="painel-cabecalho">
+                    <h2><i class="fas fa-chart-line"></i> Resumo Financeiro</h2>
+                </div>
+
+                <div class="painel-conteudo">
+                    <!-- Resumo Principal -->
+                    <div class="resumo-principal">
+                        <div class="valor-destaque total">
+                            <h3>Total Recebido</h3>
+                            <div class="valor-grande">R$ <span id="totalRecebido">0.00</span></div>
+                            <div class="valor-subtitulo">Valor acumulado total</div>
+                        </div>
+
+                        <div class="valor-destaque hoje">
+                            <h3>Total de Hoje</h3>
+                            <div class="valor-medio">R$ <span id="totalHoje">0.00</span></div>
+                            <div class="valor-subtitulo">Receita do dia atual</div>
+                        </div>
+
+                        <div class="valor-destaque mes">
+                            <h3>Total do Mês</h3>
+                            <div class="valor-medio">R$ <span id="totalMes">0.00</span></div>
+                            <div class="valor-subtitulo">Receita do mês corrente</div>
+                        </div>
+                    </div>
+
+                    <!-- Detalhamento por Método de Pagamento - Layout melhorado -->
+                    <div class="metodos-pagamento-container">
+                        <h3 class="secao-titulo"><i class="fas fa-money-bill-wave"></i> Por Método de Pagamento</h3>
+
+                        <!-- Cards de métodos de pagamento -->
+                        <div class="metodos-cards">
+                            <div class="metodo-card cartao">
+                                <div class="metodo-header">
+                                    <div class="metodo-icone"><i class="fas fa-credit-card"></i></div>
+                                    <div class="metodo-titulo">Cartão</div>
+                                </div>
+                                <div class="metodo-valor">R$ <span id="totalCartao">0.00</span></div>
+                                <div class="metodo-barra-container">
+                                    <div class="metodo-barra" id="barra-progresso-cartao" style="width: 0%;"></div>
+                                </div>
+                                <div class="metodo-porcentagem"><span id="porcentagem-cartao">0%</span> do total</div>
+                            </div>
+
+                            <div class="metodo-card pix">
+                                <div class="metodo-header">
+                                    <div class="metodo-icone"><i class="fas fa-qrcode"></i></div>
+                                    <div class="metodo-titulo">PIX</div>
+                                </div>
+                                <div class="metodo-valor">R$ <span id="totalPix">0.00</span></div>
+                                <div class="metodo-barra-container">
+                                    <div class="metodo-barra" id="barra-progresso-pix" style="width: 0%;"></div>
+                                </div>
+                                <div class="metodo-porcentagem"><span id="porcentagem-pix">0%</span> do total</div>
+                            </div>
+
+                            <div class="metodo-card dinheiro">
+                                <div class="metodo-header">
+                                    <div class="metodo-icone"><i class="fas fa-money-bill-alt"></i></div>
+                                    <div class="metodo-titulo">Dinheiro</div>
+                                </div>
+                                <div class="metodo-valor">R$ <span id="totalDinheiro">0.00</span></div>
+                                <div class="metodo-barra-container">
+                                    <div class="metodo-barra" id="barra-progresso-dinheiro" style="width: 0%;"></div>
+                                </div>
+                                <div class="metodo-porcentagem"><span id="porcentagem-dinheiro">0%</span> do total</div>
+                            </div>
+                        </div>
+
+                        <!-- Gráfico de barras horizontais -->
+                        <div class="grafico-comparativo">
+                            <div class="grafico-titulo">Comparativo de Métodos de Pagamento</div>
+
+                            <div class="grafico-barras">
+                                <div class="grafico-item">
+                                    <div class="grafico-label">Cartão</div>
+                                    <div class="grafico-barra-container">
+                                        <div id="barra-cartao" class="barra cartao" style="width: 0%;" data-valor="0%">
+                                        </div>
+                                    </div>
+                                    <div class="grafico-valor" id="valor-cartao">R$ 0.00 (0%)</div>
+                                </div>
+
+                                <div class="grafico-item">
+                                    <div class="grafico-label">PIX</div>
+                                    <div class="grafico-barra-container">
+                                        <div id="barra-pix" class="barra pix" style="width: 0%;" data-valor="0%"></div>
+                                    </div>
+                                    <div class="grafico-valor" id="valor-pix">R$ 0.00 (0%)</div>
+                                </div>
+
+                                <div class="grafico-item">
+                                    <div class="grafico-label">Dinheiro</div>
+                                    <div class="grafico-barra-container">
+                                        <div id="barra-dinheiro" class="barra dinheiro" style="width: 0%;"
+                                            data-valor="0%"></div>
+                                    </div>
+                                    <div class="grafico-valor" id="valor-dinheiro">R$ 0.00 (0%)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Estatísticas Adicionais -->
+                    <div class="estatisticas-container">
+                        <h3 class="secao-titulo"><i class="fas fa-chart-bar"></i> Estatísticas</h3>
+
+                        <div class="estatisticas-grid">
+                            <div class="estatistica-card">
+                                <div class="estatistica-icone">
+                                    <i class="fas fa-calculator"></i>
+                                </div>
+                                <div class="estatistica-info">
+                                    <div class="estatistica-titulo">Ticket Médio</div>
+                                    <div class="estatistica-valor">R$ <span id="mediaValor">0.00</span></div>
+                                </div>
+                            </div>
+
+                            <div class="estatistica-card">
+                                <div class="estatistica-icone">
+                                    <i class="fas fa-arrow-up"></i>
+                                </div>
+                                <div class="estatistica-info">
+                                    <div class="estatistica-titulo">Maior Venda</div>
+                                    <div class="estatistica-valor">R$ <span id="maiorValor">0.00</span></div>
+                                </div>
+                            </div>
+
+                            <div class="estatistica-card">
+                                <div class="estatistica-icone">
+                                    <i class="fas fa-user-check"></i>
+                                </div>
+                                <div class="estatistica-info">
+                                    <div class="estatistica-titulo">Clientes Recorrentes</div>
+                                    <div class="estatistica-valor"><span id="clientesRecorrentes">0</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2><i class="fas fa-history"></i> Histórico Financeiro</h2>
+
+                <div class="filter-container">
+                    <div class="form-group">
+                        <label for="filtroData">Filtrar por data:</label>
+                        <input type="date" id="filtroData">
+                    </div>
+                    <button id="btn-filtrar" class="btn-secondary"><i class="fas fa-filter"></i> Filtrar</button>
+                    <button id="btn-limpar-filtro" class="btn-secondary"><i class="fas fa-broom"></i> Limpar
+                        Filtro</button>
+                    <button id="btn-clientes-hoje" class="btn-primary"><i class="fas fa-users"></i> Clientes de
+                        Hoje</button>
+                    <button id="btn-imprimir-historico" class="btn-success"><i class="fas fa-print"></i> Imprimir
+                        Histórico</button>
+                </div>
+
+                <!-- Atualizar as instruções de PDF
+                <div class="pdf-instrucoes"
+                    style="margin: 10px 0; padding: 10px; background: #f8f9fa; border-radius: 5px; border-left: 3px solid #3498db;">
+                    <h4 style="margin-top: 0; color: #3498db;"><i class="fas fa-info-circle"></i> Como salvar como PDF
+                    </h4>
+                    <ol style="margin-bottom: 0; padding-left: 25px;">
+                        <li>Clique em "Imprimir Histórico"</li>
+                        <li>No diálogo de impressão, selecione "Salvar como PDF" no campo de impressora/destino</li>
+                        <li>Escolha o local para salvar o arquivo</li>
+                        <li>Clique em "Salvar" para gerar o PDF</li>
+                    </ol>
+                </div> -->
+
+                <!-- Indicador de filtro ativo (inicialmente oculto) -->
+                <div id="filtro-ativo" class="filtro-ativo" style="display: none;">
+                    <p><i class="fas fa-filter"></i> <span id="filtro-descricao">Exibindo dados filtrados</span></p>
+                    <button id="btn-remover-filtro"><i class="fas fa-times"></i></button>
+                </div>
+
+                <!-- Clientes de hoje container (existente) -->
+                <div id="clientes-hoje-container" class="clientes-hoje-container" style="display: none;">
+                    <div class="clientes-hoje-header">
+                        <h3><i class="fas fa-users"></i> Clientes Atendidos Hoje</h3>
+                        <button id="btn-exportar-clientes" class="btn-secondary"><i class="fas fa-file-export"></i>
+                            Exportar Lista</button>
+                        <button id="btn-fechar-clientes" class="btn-danger"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="clientes-hoje-content">
+                        <table id="tabelaClientesHoje">
+                            <thead>
+                                <tr>
+                                    <th>Cliente</th>
+                                    <th>Telefone</th>
+                                    <th>Serviço</th>
+                                    <th>Valor</th>
+                                    <th>Pagamento</th>
+                                    <th>Hora</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-clientes-hoje"></tbody>
+                        </table>
+                        <div class="resumo-clientes">
+                            <p>Total de clientes: <span id="total-clientes">0</span></p>
+                            <p>Valor total: R$ <span id="valor-total-hoje">0.00</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <table id="tabelaFinanceiro">
+                    <thead>
+                        <tr>
+                            <th class="cliente-col">Cliente</th>
+                            <th class="telefone-col">Telefone</th>
+                            <th class="servico-col">Serviço</th>
+                            <th class="valor-col">Valor</th>
+                            <th class="pagamento-col">Pagamento</th>
+                            <th class="data-col">Data/Hora</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-financeiro"></tbody>
+                </table>
+
+                <!-- Rodapé com resumo da tabela -->
+                <div class="tabela-financeiro-footer">
+                    <p>Total de transações: <span id="total-transacoes">0</span></p>
+                    <p>Valor total: <span id="total-valor" class="total-valor">R$ 0,00</span></p>
+                </div>
+
+                <!-- Mensagem para quando não houver resultados (inicialmente oculto) -->
+                <div id="sem-resultados" class="sem-resultados" style="display: none;">
+                    <i class="fas fa-search"></i> Nenhuma transação encontrada para o filtro aplicado.
+                </div>
+            </div>
+
+            <!-- Conteúdo para impressão (inicialmente oculto) -->
+            <div id="conteudo-impressao" style="display: none;">
+                <div class="cabecalho-impressao">
+                    <h1>Jorge Lavanderia</h1>
+                    <h2>Histórico Financeiro Completo</h2>
+                    <p>Data de impressão: <span id="data-impressao"></span></p>
+                </div>
+
+                <table id="tabela-impressao">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Telefone</th>
+                            <th>Serviço</th>
+                            <th>Valor</th>
+                            <th>Pagamento</th>
+                            <th>Data</th>
+                            <th>Hora</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-impressao"></tbody>
+                </table>
+
+                <div class="resumo-impressao">
+                    <p>Total de transações: <span id="total-transacoes-impressao">0</span></p>
+                    <p>Valor total: R$ <span id="valor-total-impressao">0.00</span></p>
+                </div>
+
+                <div class="rodape-impressao">
+                    <p>Jorge Lavanderia - Limpeza com qualidade</p>
+                    <p>Contato: (11) 99999-9999 - contato@jorgelavanderia.com.br</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="site-footer">
+            <div class="footer-container">
+                <div class="footer-section info">
+                    <h4>Jorge Lavanderia</h4>
+                    <p>Gerenciamento completo para sua lavanderia</p>
+                </div>
+
+                <div class="footer-section links">
+                    <h4>Links Rápidos</h4>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="pedidos.html">Pedidos</a></li>
+                        <li><a href="estoque.html">Estoque</a></li>
+                        <li><a href="financeiro.html">Financeiro</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section contact">
+                    <h4>Contato</h4>
+                    <p><i class="icon-phone"></i> (11) 99999-9999</p>
+                    <p><i class="icon-email"></i> contato@jorgelavanderia.com.br</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Jorge Lavanderia | Desenvolvido por <a href="#" class="developer-link">Ivonildo Lima</a>
+                </p>
+                <p class="version">Versão 1.0</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script>window.scriptsCarregados.storage = true; console.log('storage.js carregado');</script>
+
+    <script src="js/financeiro.js"></script>
+    <script>window.scriptsCarregados.financeiro = true; console.log('financeiro.js carregado');</script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof Financeiro === 'undefined') {
+                console.error('ERRO CRÍTICO: Objeto Financeiro não encontrado!');
+                alert('Erro no carregamento do sistema. Por favor, recarregue a página ou entre em contato com o suporte.');
+            } else {
+                console.log('DOM carregado, inicializando Financeiro...');
+                try {
+                    Financeiro.init();
+                    console.log('Inicialização do Financeiro concluída com sucesso');
+                } catch (error) {
+                    console.error('Erro na inicialização do Financeiro:', error);
+                    alert('Ocorreu um erro ao inicializar o módulo financeiro. Veja o console para detalhes.');
+                }
+            }
+        });
+    </script>
+    <div style="position: fixed; bottom: 10px; right: 10px; z-index: 9999;">
+        <button id="btn-verificar-storage"
+            style="background: #333; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+            Verificar Storage
+        </button>
+    </div>
+
+    <script>
+        document.getElementById('btn-verificar-storage').addEventListener('click', function () {
+            const transacoes = JSON.parse(localStorage.getItem('transacoes')) || [];
+            const resumo = JSON.parse(localStorage.getItem('resumoFinanceiro')) || {};
+
+            console.log('Transações:', transacoes);
+            console.log('Resumo Financeiro:', resumo);
+
+            alert(`Transações: ${transacoes.length}\nResumo salvo: ${resumo.ultimaAtualizacao ? 'Sim' : 'Não'}`);
+        });
+    </script>
+
+    <script>
+        // Funcionalidade para o botão de imprimir histórico
+        document.addEventListener('DOMContentLoaded', function () {
+            const btnImprimirHistorico = document.getElementById('btn-imprimir-historico');
+
+            if (btnImprimirHistorico) {
+                console.log('Botão de impressão encontrado, adicionando evento de clique');
+
+                btnImprimirHistorico.addEventListener('click', function () {
+                    console.log('Botão imprimir clicado');
+                    prepararImpressaoHistorico();
+                });
+            } else {
+                console.error('Botão de impressão não encontrado na página');
+            }
+
+            /**
+             * Prepara o conteúdo para impressão do histórico financeiro
+             */
+            function prepararImpressaoHistorico() {
+                if (!Financeiro || !Financeiro.transacoes || Financeiro.transacoes.length === 0) {
+                    alert('Não há transações para imprimir.');
+                    return;
+                }
+
+                console.log('Preparando impressão de', Financeiro.transacoes.length, 'transações');
+
+                // Atualizar a data de impressão
+                const dataImpressao = document.getElementById('data-impressao');
+                if (dataImpressao) {
+                    const agora = new Date();
+                    dataImpressao.textContent = agora.toLocaleString('pt-BR');
+                }
+
+                // Limpar e preencher a tabela para impressão
+                const tbodyImpressao = document.getElementById('tbody-impressao');
+                if (!tbodyImpressao) {
+                    console.error('Elemento tbody-impressao não encontrado');
+                    return;
+                }
+
+                tbodyImpressao.innerHTML = '';
+
+                let valorTotal = 0;
+
+                // Ordenar transações por data (mais recentes primeiro)
+                const transacoesOrdenadas = [...Financeiro.transacoes].sort((a, b) => {
+                    // Converter datas para objetos Date
+                    const dataA = converterDataHoraParaDate(a.data, a.hora);
+                    const dataB = converterDataHoraParaDate(b.data, b.hora);
+                    return dataB - dataA;
+                });
+
+                // Preencher a tabela com as transações
+                transacoesOrdenadas.forEach(transacao => {
+                    valorTotal += transacao.valor;
+
+                    const tr = document.createElement('tr');
+
+                    // Cliente
+                    const tdCliente = document.createElement('td');
+                    tdCliente.textContent = transacao.cliente || '-';
+                    tr.appendChild(tdCliente);
+
+                    // Telefone
+                    const tdTelefone = document.createElement('td');
+                    tdTelefone.textContent = transacao.telefone || '-';
+                    tr.appendChild(tdTelefone);
+
+                    // Serviço
+                    const tdServico = document.createElement('td');
+                    tdServico.textContent = transacao.servico || '-';
+                    tr.appendChild(tdServico);
+
+                    // Valor
+                    const tdValor = document.createElement('td');
+                    tdValor.textContent = `R$ ${transacao.valor.toFixed(2)}`;
+                    tr.appendChild(tdValor);
+
+                    // Pagamento
+                    const tdPagamento = document.createElement('td');
+                    let metodoPagamento = '-';
+                    switch (transacao.pagamento) {
+                        case 'cartao': metodoPagamento = 'Cartão'; break;
+                        case 'pix': metodoPagamento = 'PIX'; break;
+                        case 'dinheiro': metodoPagamento = 'Dinheiro'; break;
+                        default: metodoPagamento = transacao.pagamento || '-';
+                    }
+                    tdPagamento.textContent = metodoPagamento;
+                    tr.appendChild(tdPagamento);
+
+                    // Data
+                    const tdData = document.createElement('td');
+                    tdData.textContent = transacao.data || '-';
+                    tr.appendChild(tdData);
+
+                    // Hora
+                    const tdHora = document.createElement('td');
+                    tdHora.textContent = transacao.hora || '-';
+                    tr.appendChild(tdHora);
+
+                    tbodyImpressao.appendChild(tr);
+                });
+
+                // Atualizar resumo da impressão
+                const totalTransacoesImpressao = document.getElementById('total-transacoes-impressao');
+                if (totalTransacoesImpressao) {
+                    totalTransacoesImpressao.textContent = transacoesOrdenadas.length;
+                }
+
+                const valorTotalImpressao = document.getElementById('valor-total-impressao');
+                if (valorTotalImpressao) {
+                    valorTotalImpressao.textContent = valorTotal.toFixed(2);
+                }
+
+                console.log('Conteúdo de impressão preparado, abrindo diálogo de impressão');
+
+                // Mostrar o conteúdo de impressão e abrir o diálogo
+                const conteudoImpressao = document.getElementById('conteudo-impressao');
+                if (conteudoImpressao) {
+                    conteudoImpressao.style.display = 'block';
+
+                    // Pequeno atraso para garantir que o conteúdo seja renderizado
+                    setTimeout(() => {
+                        window.print();
+
+                        // Esconder o conteúdo após a impressão
+                        setTimeout(() => {
+                            conteudoImpressao.style.display = 'none';
+                        }, 500);
+                    }, 300);
+                }
+            }
+
+            /**
+             * Converte uma data e hora em string para um objeto Date
+             * @param {string} dataStr - Data no formato DD/MM/AAAA
+             * @param {string} horaStr - Hora no formato HH:MM
+             * @returns {Date} Objeto Date
+             */
+            function converterDataHoraParaDate(dataStr, horaStr) {
+                if (!dataStr) return new Date(0);
+
+                const partesData = dataStr.split('/');
+                if (partesData.length !== 3) return new Date(0);
+
+                const dia = parseInt(partesData[0], 10);
+                const mes = parseInt(partesData[1], 10) - 1; // Meses em JS são 0-11
+                const ano = parseInt(partesData[2], 10);
+
+                // Configurar hora se disponível
+                let hora = 0, minuto = 0;
+                if (horaStr) {
+                    const partesHora = horaStr.split(':');
+                    if (partesHora.length >= 2) {
+                        hora = parseInt(partesHora[0], 10);
+                        minuto = parseInt(partesHora[1], 10);
+                    }
+                }
+
+                return new Date(ano, mes, dia, hora, minuto, 0);
+            }
+        });
+    </script>
+
+    <script src="js/impressao.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('Inicializando sistema financeiro...');
+
+            // Verificar se o botão existe direto no DOM
+            setTimeout(function () {
+                const btnImprimir = document.getElementById('btn-imprimir-historico');
+                if (btnImprimir) {
+                    console.log('Verificação de botão: Existe!');
+
+                    // Teste direto no console
+                    btnImprimir.addEventListener('click', function () {
+                        console.log('Clique detectado - teste direto');
+                    });
+                } else {
+                    console.error('Verificação de botão: Não encontrado!');
+                }
+            }, 1000);
+        });
+    </script>
+
+    <!-- Substitua o script atual do botão Exportar para PDF -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const btnExportarPDF = document.getElementById('btn-exportar-pdf');
+
+            if (btnExportarPDF) {
+                btnExportarPDF.addEventListener('click', function () {
+                    // Chamar a mesma função do botão de impressão
+                    if (typeof abrirNovaJanelaImpressao === 'function') {
+                        abrirNovaJanelaImpressao();
+                    } else {
+                        // Tenta acessar através do escopo global
+                        const impressaoScripts = document.querySelectorAll('script');
+                        let encontrou = false;
+
+                        for (const script of impressaoScripts) {
+                            if (script.src && script.src.includes('impressao.js')) {
+                                encontrou = true;
+                                break;
+                            }
+                        }
+
+                        if (encontrou) {
+                            alert('A função de impressão não está acessível. Tente usar o botão "Imprimir Histórico" em vez disso.');
+                        } else {
+                            alert('Script de impressão não encontrado. Verifique se o arquivo impressao.js está incluído na página.');
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
