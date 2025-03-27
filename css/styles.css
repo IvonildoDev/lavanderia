@@ -97,11 +97,27 @@ h1 {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
 h2 {
     color: var(--primary-color);
     margin-bottom: 20px;
     padding-bottom: 10px;
     border-bottom: 1px solid var(--border-color);
+}
+
+h2 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    color: #2c3e50;
+    font-size: 20px;
 }
 
 h2 i {
@@ -121,10 +137,23 @@ h2 i {
     margin-bottom: 15px;
 }
 
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0;
+}
+
 label {
     display: block;
     margin-bottom: 5px;
     font-weight: 500;
+}
+
+.form-group label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #2c3e50;
+    font-size: 15px;
 }
 
 input, select {
@@ -135,10 +164,24 @@ input, select {
     font-size: 16px;
 }
 
+.form-group input {
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 15px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
 input:focus, select:focus {
     outline: none;
     border-color: var(--accent-color);
     box-shadow: 0 0 0 2px rgba(72, 149, 239, 0.2);
+}
+
+.form-group input:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    outline: none;
 }
 
 /* Botões */
@@ -215,6 +258,28 @@ button i {
 
 .btn-success i {
     margin-right: 6px;
+}
+
+/* Estilos para o botão de retirar item */
+.btn-retirar-item {
+    background-color: #f39c12;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-retirar-item:hover {
+    background-color: #e67e22;
+}
+
+.btn-retirar-item i {
+    margin-right: 5px;
 }
 
 /* Tabelas */
@@ -1684,4 +1749,288 @@ tr.hoje:hover {
     .grafico-valor {
         text-align: center;
     }
+}
+
+/* Estilos para mensagens de alerta */
+.alerta {
+    padding: 10px 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Estilos para melhorar o formulário de adição ao estoque */
+#form-estoque {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Estilo específico para o botão de adicionar */
+.form-actions {
+    display: flex;
+    align-items: flex-end; /* Alinha o botão com o fundo dos inputs */
+    margin-bottom: 0;
+}
+
+#btn-adicionar-produto {
+    padding: 10px 20px;
+    font-size: 15px;
+    height: 42px; /* Mesmo tamanho dos inputs */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #27ae60;
+    transition: background-color 0.2s;
+}
+
+#btn-adicionar-produto:hover {
+    background-color: #2ecc71;
+}
+
+#btn-adicionar-produto i {
+    margin-right: 8px;
+}
+
+/* Estilo para dispositivos móveis */
+@media (max-width: 768px) {
+    #form-estoque {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .form-actions {
+        margin-top: 5px;
+    }
+}
+
+/* Estilos para o formulário de estoque */
+#form-estoque {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 20px;
+    align-items: end;
+}
+
+#form-estoque .form-group {
+    margin-bottom: 0;
+}
+
+/* Em telas menores, empilhar os elementos */
+@media (max-width: 768px) {
+    #form-estoque {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Botão de adicionar produto */
+#btn-adicionar-produto {
+    padding: 10px 20px;
+    height: 42px; /* Altura similar aos inputs */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+#btn-adicionar-produto i {
+    margin-right: 8px;
+}
+
+/* Ajustar ação do formulário para ocupar uma coluna completa */
+#form-estoque .form-actions {
+    grid-column: span 1;
+}
+
+/* Alinhamento da tabela */
+#tabelaEstoque {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#tabelaEstoque th {
+    text-align: left;
+    padding: 12px 15px;
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+#tabelaEstoque td {
+    padding: 10px 15px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* Estilo para os botões na coluna ações */
+.acoes {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-retirar-item {
+    background-color: #f39c12;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-retirar-item:hover {
+    background-color: #e67e22;
+}
+
+.btn-retirar-item i {
+    margin-right: 4px;
+}
+
+.btn-remover {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-remover:hover {
+    background-color: #c0392b;
+}
+
+/* Mensagem para estoque vazio */
+.empty-message {
+    text-align: center;
+    padding: 20px;
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+/* Estilos responsivos para tabelas */
+@media (max-width: 768px) {
+    /* Estilo geral para tabelas em dispositivos móveis */
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+    
+    /* Ocultar cabeçalhos da tabela */
+    thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    
+    /* Estilo para linhas de tabela em móveis */
+    tr {
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        background-color: white;
+        position: relative;
+    }
+    
+    /* Estilo para células em layout móvel */
+    td {
+        position: relative;
+        padding: 12px 10px 12px 50% !important;
+        min-height: 30px;
+        border: none !important;
+        border-bottom: 1px solid #eee !important;
+        text-align: left !important;
+    }
+    
+    /* Último item não precisa de borda inferior */
+    tr td:last-child {
+        border-bottom: none !important;
+    }
+    
+    /* Adicionar rótulos pseudo para cada célula */
+    td:before {
+        position: absolute;
+        left: 10px;
+        width: 45%;
+        font-weight: bold;
+        content: attr(data-label);
+    }
+    
+    /* Ajustes para a coluna de ações */
+    td.acoes {
+        padding: 10px !important;
+        display: flex;
+        justify-content: space-around;
+        background-color: #f8f9fa;
+    }
+    
+    /* Ajustar os botões de ações */
+    .acoes button {
+        flex: 1;
+        margin: 0 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 36px;
+        font-size: 13px;
+    }
+    
+    /* Mensagem quando o estoque está vazio */
+    .empty-message {
+        padding: 15px !important;
+        text-align: center;
+    }
+}
+
+/* Estilos gerais para tabelas (independente do tamanho da tela) */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 10px 15px;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+}
+
+/* Estilo para linhas alternadas */
+tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+/* Hover em linhas da tabela */
+tbody tr:hover {
+    background-color: #e9ecef;
 }
